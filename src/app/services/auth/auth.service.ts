@@ -1,20 +1,41 @@
-import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Injectable} from '@angular/core';
+
+import jwt_decode from 'jwt-decode';
+import {Params, Router} from "@angular/router";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AuthService {
+    private readonly key = 'product-access-key';
 
-  constructor(private http: HttpClient) { }
+    constructor(private router: Router) {
+    }
 
-  login(userName: string, password: string):Observable<any>{
-    return this.http.post('authenticate', {username: userName, password: password});
-  }
+    login(token: string, params: Params) {
+        sessionStorage.setItem(this.key, token);
+        let redirectTo = '/'
+        if (params['goTo']) {
+            redirectTo = params['goTo'];
+        }
 
-  signUp(userName: string, password: string):Observable<any>{
-    return this.http.post('signup', {username: userName, password: password});
-  }
+        this.router.navigate([redirectTo]);
+    }
 
+    getAccessToken(): any {
+        return sessionStorage.getItem(this.key);
+    }
+
+    getLoggedInUser(): any {
+        if (this.getAccessToken()) {
+            return jwt_decode(this.getAccessToken());
+        } else {
+            return null;
+        }
+    }
+
+    logout(): void {
+        sessionStorage.removeItem(this.key);
+        this.router.navigate(['/login']);
+    }
 }

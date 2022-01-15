@@ -13,7 +13,6 @@ export class BaseUrlInterceptor implements HttpInterceptor {
 
         const apiReq = request.clone({
             url: `${this.baseUrl}/${request.url}`,
-            headers: new HttpHeaders().set("Authorization", 'Bearer '+sessionStorage.getItem('product-access-key'))
         });
         return next.handle(apiReq);
     }

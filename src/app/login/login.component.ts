@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {LoginService} from "../services/login/login.service";
+import {ActivatedRoute} from "@angular/router";
 import {AuthService} from "../services/auth/auth.service";
 
 @Component({
@@ -10,27 +12,34 @@ import {AuthService} from "../services/auth/auth.service";
 export class LoginComponent implements OnInit {
     titleAlert: string = 'This field is required';
     formGroup: FormGroup;
-    emailRegex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    signUpSuccessful;
 
-    constructor(private formBuilder: FormBuilder, private authService: AuthService) {
+    constructor(private formBuilder: FormBuilder, private loginService: LoginService,
+                private activatedRoute: ActivatedRoute,
+                private authService: AuthService) {
     }
 
     ngOnInit(): void {
         this.formGroup = this.formBuilder.group({
-                'email': [null, [Validators.required, Validators.pattern(this.emailRegex)]],
+                'email': [null, [Validators.required]],
                 'password': [null, [Validators.required]]
             }
         );
     }
 
     login = (value: any): void =>{
-        this.authService.login(value.email, value.password).subscribe(result=>{
-            console.log(result);
-            sessionStorage.setItem('product-access-key', result.token);
+        this.loginService.login(value.email, value.password).subscribe(result=>{
+            this.activatedRoute.queryParams.subscribe(params => {
+                this.authService.login(result.token, params);
+            })
+        }, error => {
+            this.formGroup.setErrors(error);
         });
     }
 
-    signUp = (value: any): void =>{
-        this.authService.signUp(value.email, value.password).subscribe(result=>console.log(result));
+    signUp = (): void =>{
+        this.loginService.signUp(this.formGroup.get('email').value, this.formGroup.get('password').value).subscribe(()=>{
+            this.signUpSuccessful = 'Sign Up SuccessFull Please try to login now with the same';
+        });
     }
 }

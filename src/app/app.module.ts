@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouterModule} from '@angular/router';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
 import {TopBarComponent} from './top-bar/top-bar.component';
@@ -19,10 +19,18 @@ import {MatCardModule} from "@angular/material/card";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {environment} from "../environments/environment";
 import {BaseUrlInterceptor} from "./interceptor/http-request-base-url.interceptor";
+import {HomePageComponent} from './home-page/home-page.component';
+import {JwtInterceptor} from "./interceptor/jwt-interceptor";
+import {MatTooltipModule} from "@angular/material/tooltip";
+import {LogoutComponent} from './logout/logout.component';
+import {MatListModule} from "@angular/material/list";
+import {MatTableModule} from "@angular/material/table";
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
     imports: [
         BrowserModule,
+        FormsModule,
         MatToolbarModule,
         ReactiveFormsModule,
         ReactiveFormsModule,
@@ -32,18 +40,34 @@ import {BaseUrlInterceptor} from "./interceptor/http-request-base-url.intercepto
         HttpClientModule,
         RouterModule.forRoot([
             {path: 'login', component: LoginComponent},
-            {path: '', component: ProductListComponent, canActivate: [AuthGuard]},
+            {
+                path: '', component: HomePageComponent, canActivate: [AuthGuard],
+                children: [{
+                    path: '**', redirectTo: 'list'
+                },
+                    {path: 'list', component: ProductListComponent},
+                    {
+                        path: 'logout', component: LogoutComponent
+                    }
+                ]
+            }
         ]),
         MatButtonModule,
         MatIconModule,
         MatMenuModule,
-        MatCardModule
+        MatCardModule,
+        MatTooltipModule,
+        MatListModule,
+        MatTableModule,
+        MatCheckboxModule
     ],
     declarations: [
         AppComponent,
         TopBarComponent,
         ProductListComponent,
-        LoginComponent
+        LoginComponent,
+        HomePageComponent,
+        LogoutComponent
     ],
     bootstrap: [
         AppComponent
@@ -53,15 +77,12 @@ import {BaseUrlInterceptor} from "./interceptor/http-request-base-url.intercepto
             provide: HTTP_INTERCEPTORS,
             useClass: BaseUrlInterceptor,
             multi: true,
+        }, {
+            provide: HTTP_INTERCEPTORS,
+            useClass: JwtInterceptor,
+            multi: true,
         }
     ]
 })
 export class AppModule {
 }
-
-
-/*
-Copyright Google LLC. All Rights Reserved.
-Use of this source code is governed by an MIT-style license that
-can be found in the LICENSE file at https://angular.io/license
-*/

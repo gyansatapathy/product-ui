@@ -2,12 +2,14 @@
   <mat-toolbar-row>
     <span>Airbus Product App</span>
     <span class="spacer"></span>
-    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu">
+    <button mat-icon-button class="example-icon" [matMenuTriggerFor]="menu"
+            matTooltip={{user}}
+            matTooltipPosition="below">
       <mat-icon>account_box</mat-icon>
     </button>
   </mat-toolbar-row>
 </mat-toolbar>
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>Logout</button>
+  <button mat-menu-item (click)="logOutApp()" >Logout</button>
 </mat-menu>

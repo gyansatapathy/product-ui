@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-top-bar',
@@ -6,6 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./top-bar.component.css']
 })
 export class TopBarComponent {
+  @Input() user: string;
+  @Output() readonly logout = new EventEmitter<void>();
+
+  logOutApp(){
+    this.logout.emit();
+  }
 
 }
 
