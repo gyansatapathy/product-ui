@@ -2,24 +2,21 @@
 
 * {
   font-family: 'Roboto', Arial, sans-serif;
-  color: #616161;
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /*-moz-osx-font-smoothing: grayscale;*/
 }
 
 body {
   margin: 0;
 }
 
-.container {
-  display: flex;
-  flex-direction: row;
-}
-
-router-outlet + *  {
-  padding: 0 16px;
-}
+/*.container {*/
+/*  display: flex;*/
+/*  flex-direction: row;*/
+/*  width: 100vw;*/
+/*  height: 100vh;*/
+/*}*/
 
 /* Text */
 
@@ -104,24 +101,6 @@ label {
   padding-right: 4px;
 }
 
-/* Top Bar */
-
-app-top-bar {
-  width: 100%;
-  height: 68px;
-  background-color: #1976d2;
-  padding: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
-app-top-bar h1 {
-  color: white;
-  margin: 0;
-}
-
 /* Checkout Cart, Shipping Prices */
 
 .cart-item, .shipping-item {
@@ -143,3 +122,5 @@ Copyright Google LLC. All Rights Reserved.
 Use of this source code is governed by an MIT-style license that
 can be found in the LICENSE file at https://angular.io/license
 */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

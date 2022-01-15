@@ -1,0 +1,6 @@
+::ng-deep .mat-card{
+    width: 23%;
+}
+button{
+    flex: 1;
+}
