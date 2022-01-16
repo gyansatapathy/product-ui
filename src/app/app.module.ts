@@ -26,6 +26,8 @@ import {LogoutComponent} from './logout/logout.component';
 import {MatListModule} from "@angular/material/list";
 import {MatTableModule} from "@angular/material/table";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import { GridModule } from '@progress/kendo-angular-grid';
+
 
 @NgModule({
     imports: [
@@ -59,7 +61,8 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
         MatTooltipModule,
         MatListModule,
         MatTableModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        GridModule
     ],
     declarations: [
         AppComponent,
