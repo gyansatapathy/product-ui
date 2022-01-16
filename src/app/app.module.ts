@@ -49,7 +49,7 @@ import {GridModule} from '@progress/kendo-angular-grid';
                     {path: 'product-list', component: ProductListComponent},
                 ]
             }
-        ]),
+        ], {useHash: true}),
         MatButtonModule,
         MatIconModule,
         MatMenuModule,

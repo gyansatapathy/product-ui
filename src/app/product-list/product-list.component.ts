@@ -9,7 +9,7 @@ const createFormGroup = (dataItem, isNew) =>
         productId: new FormControl({value: dataItem.productId, disabled: !isNew}, Validators.required),
         productName: new FormControl(dataItem.productName, Validators.required),
         productCategory: new FormControl(dataItem.productCategory, Validators.required),
-        units: new FormControl(dataItem.units)
+        units: new FormControl(dataItem.units, Validators.pattern("^[0-9]*$"))
     });
 
 const matches = (el, selector) =>
