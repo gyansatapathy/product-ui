@@ -11,7 +11,6 @@ export class HomePageComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    console.log(this.authService.getLoggedInUser());
     this.user = this.authService.getLoggedInUser().sub;
   }
 
