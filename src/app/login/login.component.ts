@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
     titleAlert: string = 'This field is required';
     formGroup: FormGroup;
     signUpSuccessful;
+    loginError;
 
     constructor(private formBuilder: FormBuilder, private loginService: LoginService,
                 private activatedRoute: ActivatedRoute,
@@ -28,12 +29,13 @@ export class LoginComponent implements OnInit {
     }
 
     login = (value: any): void =>{
+        this.loginError = null;
         this.loginService.login(value.email, value.password).subscribe(result=>{
             this.activatedRoute.queryParams.subscribe(params => {
                 this.authService.login(result.token, params);
             })
         }, error => {
-            this.formGroup.setErrors(error);
+            this.loginError = "Login Failed Please Check Credentials or Sign Up";
         });
     }
 
