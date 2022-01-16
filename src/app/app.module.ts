@@ -22,11 +22,10 @@ import {BaseUrlInterceptor} from "./interceptor/http-request-base-url.intercepto
 import {HomePageComponent} from './home-page/home-page.component';
 import {JwtInterceptor} from "./interceptor/jwt-interceptor";
 import {MatTooltipModule} from "@angular/material/tooltip";
-import {LogoutComponent} from './logout/logout.component';
 import {MatListModule} from "@angular/material/list";
 import {MatTableModule} from "@angular/material/table";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import { GridModule } from '@progress/kendo-angular-grid';
+import {GridModule} from '@progress/kendo-angular-grid';
 
 
 @NgModule({
@@ -45,12 +44,9 @@ import { GridModule } from '@progress/kendo-angular-grid';
             {
                 path: '', component: HomePageComponent, canActivate: [AuthGuard],
                 children: [{
-                    path: '**', redirectTo: 'list'
+                    path: '**', redirectTo: 'product-list'
                 },
-                    {path: 'list', component: ProductListComponent},
-                    {
-                        path: 'logout', component: LogoutComponent
-                    }
+                    {path: 'product-list', component: ProductListComponent},
                 ]
             }
         ]),
@@ -69,8 +65,7 @@ import { GridModule } from '@progress/kendo-angular-grid';
         TopBarComponent,
         ProductListComponent,
         LoginComponent,
-        HomePageComponent,
-        LogoutComponent
+        HomePageComponent
     ],
     bootstrap: [
         AppComponent
