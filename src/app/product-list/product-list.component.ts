@@ -12,10 +12,6 @@ const createFormGroup = (dataItem, isNew) =>
         units: new FormControl(dataItem.units, [Validators.required, Validators.pattern("^[0-9]*$")])
     });
 
-const matches = (el, selector) =>
-    (el.matches || el.msMatchesSelector).call(el, selector);
-
-
 @Component({
     selector: 'app-product-list',
     templateUrl: './product-list.component.html',
@@ -25,7 +21,6 @@ export class ProductListComponent implements OnInit {
 
     private isNew: boolean;
     private editedRowIndex: number;
-    private docClickSubscription: any;
     public formGroup: FormGroup;
     @ViewChild(GridComponent)
     private grid: GridComponent;
@@ -92,20 +87,6 @@ export class ProductListComponent implements OnInit {
         this.editedRowIndex = undefined;
         this.formGroup = undefined;
     }
-
-    private onDocumentClick(e: any): void {
-        if (
-            this.formGroup &&
-            this.formGroup.valid &&
-            !matches(
-                e.target,
-                "#productsGrid tbody *, #productsGrid .k-grid-toolbar .k-button"
-            )
-        ) {
-            this.saveCurrent();
-        }
-    }
-
     private saveCurrent(): void {
         if (this.formGroup) {
             this.productService.save(this.formGroup.getRawValue(), this.isNew).subscribe(value => {
