@@ -14,7 +14,9 @@ export class ProductService {
   }
 
   searchByCategory(category: string): Observable<any> {
-    return this.http.get('product/'+ category);
+    let httpParam = new HttpParams();
+    httpParam.set('categoryName', category);
+    return this.http.get('product/search?categoryName='+category);
   }
 
   save(value: any, isNew: any): Observable<any>{
