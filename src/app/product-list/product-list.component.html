@@ -19,16 +19,17 @@
             (add)="addHandler()">
         <ng-template kendoGridToolbarTemplate>
             <button kendoGridAddCommand mat-raised-button *ngIf="!formGroup">Add new</button>
-            <button mat-raised-button *ngIf="selectedProductIds.length > 0" (click)="deleteProduct(selectedProductIds)"> Delete Product</button>
+            <button mat-raised-button color="primary" *ngIf="selectedProductIds.length > 0" (click)="deleteProduct(selectedProductIds)"> Delete Product</button>
             <div *ngIf="formGroup">
                 <button
-                        class="k-button"
+                        mat-raised-button
+                        color="primary"
                         [disabled]="!formGroup.valid"
                         (click)="saveRow()"
                 >
                     Save
                 </button>
-                <button class="k-button k-primary" (click)="cancelHandler()">
+                <button mat-raised-button (click)="cancelHandler()">
                     Cancel
                 </button>
             </div>
