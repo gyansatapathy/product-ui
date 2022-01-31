@@ -24,41 +24,41 @@ export class ProductListComponent implements OnInit {
     public formGroup: FormGroup;
     @ViewChild(GridComponent)
     private grid: GridComponent;
+    showResetButton = false;
     products;
     category = new FormControl();
     displayedColumns: string[] = ['productId', 'productCategory', 'productName', 'units'];
     selection = new SelectionModel<any>(false, []);
-    selectable: SelectableSettings= {
+    selectable: SelectableSettings = {
         mode: 'multiple',
         drag: false,
         checkboxOnly: true
     }
-    selectedProductIds: Array<string> =  [];
+    selectedProductIds: Array<string> = [];
 
     constructor(private productService: ProductService) {
     }
 
     ngOnInit(): void {
-        this.productService.getAllProducts().subscribe(response => {
-            this.products =  response;
-        });
+        this.loadData();
     }
 
-    searchByCategory() {
+    searchByCategory = (): void => {
         if (this.category.value) {
-            this.productService.searchByCategory(this.category.value).subscribe(result=>{
-                this.products =  result;
+            this.showResetButton = true;
+            this.productService.searchByCategory(this.category.value).subscribe(result => {
+                this.products = result;
             });
         }
     }
 
-    public saveRow() {
+    public saveRow = (): void => {
         if (this.formGroup && this.formGroup.valid) {
             this.saveCurrent();
         }
     }
 
-    public cellClickHandler({ isEdited, dataItem, rowIndex }): void {
+    public cellClickHandler = ({isEdited, dataItem, rowIndex}): void => {
         if (isEdited || (this.formGroup && !this.formGroup.valid)) {
             return;
         }
@@ -76,24 +76,25 @@ export class ProductListComponent implements OnInit {
         this.grid.editRow(rowIndex, this.formGroup);
     }
 
-    public cancelHandler(): void {
+    public cancelHandler = (): void => {
         this.closeEditor();
     }
 
-    private closeEditor(): void {
+    private closeEditor = (): void =>{
         this.grid.closeRow(this.editedRowIndex);
 
         this.isNew = false;
         this.editedRowIndex = undefined;
         this.formGroup = undefined;
     }
-    private saveCurrent(): void {
+
+    private saveCurrent = (): void =>{
         if (this.formGroup) {
             this.productService.save(this.formGroup.getRawValue(), this.isNew).subscribe(value => {
                 const index = this.products.findIndex(prod => value.productId === prod.productId);
-                if(index> -1){
+                if (index > -1) {
                     this.products[index] = value;
-                }else{
+                } else {
                     this.products.push(value);
                 }
             })
@@ -101,7 +102,7 @@ export class ProductListComponent implements OnInit {
         }
     }
 
-    public addHandler(): void {
+    public addHandler = (): void =>{
         this.closeEditor();
 
         this.formGroup = createFormGroup({
@@ -115,11 +116,23 @@ export class ProductListComponent implements OnInit {
         this.grid.addRow(this.formGroup);
     }
 
-    deleteProduct(selectedProductIds: Array<string>) {
-        this.productService.deleteProducts(selectedProductIds).subscribe(()=>{
-            this.selectedProductIds.forEach(productId=>{
-                this.products = this.products.filter(product=> product.productId != productId);
+    deleteProduct = (selectedProductIds: Array<string>): void => {
+        this.productService.deleteProducts(selectedProductIds).subscribe(() => {
+            this.selectedProductIds.forEach(productId => {
+                this.products = this.products.filter(product => product.productId != productId);
             })
         })
+    }
+
+    loadData = (): void => {
+        this.productService.getAllProducts().subscribe(response => {
+            this.products = response;
+        });
+    }
+
+    resetSearch = (): void =>{
+        this.showResetButton = false;
+        this.category.reset();
+        this.loadData();
     }
 }

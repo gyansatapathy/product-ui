@@ -5,6 +5,7 @@
             <input matInput placeholder="Search" [formControl]="category" autocomplete="off">
         </mat-form-field>
         <button mat-raised-button color="primary" (click)="searchByCategory()">Search</button>
+        <button mat-raised-button *ngIf="showResetButton" (click)="resetSearch()">Reset</button>
     </div>
 </mat-card>
 <mat-divider></mat-divider>
